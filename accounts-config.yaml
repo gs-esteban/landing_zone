@@ -1,0 +1,38 @@
+mandatoryAccounts:
+  - name: Management
+    description: >-
+      The management (primary) account. Do not change the name field for this
+      mandatory account. Note, the account name key does not need to match the
+      AWS account name.
+    email: masterpayer-1037947@accounts.manage.rackspace.com
+    organizationalUnit: Root
+    warm: false
+  - name: LogArchive
+    description: >-
+      The log archive account. Do not change the name field for this mandatory
+      account. Note, the account name key does not need to match the AWS account
+      name.
+    email: logsaws@sanchezgrupo.com
+    organizationalUnit: Security
+    warm: false
+  - name: Audit
+    description: >-
+      The security audit account (also referred to as the audit account). Do not
+      change the name field for this mandatory account. Note, the account name
+      key does not need to match the AWS account name.
+    email: segaws@sanchezgrupo.com
+    organizationalUnit: Security
+    warm: false
+# workloadAccounts:
+  # - name: Development
+  #   description: The New Development or Sandbox account. This will be used for testing new services and features, but will be empty to start.
+  #   email: 
+  #   organizationalUnit: Workloads/Development
+  # - name: Staging
+  #   description: The New Staging account. This will be used for testing new services and features, but will be empty to start.
+  #   email: 
+  #   organizationalUnit: Workloads/Staging
+  # - name: Production
+  #   description: The New Production account. We will be migrating from the existing heman account into this. We will be actively using this account
+  #   email: 
+  #   organizationalUnit: Workloads/Production

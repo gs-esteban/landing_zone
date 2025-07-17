@@ -1,0 +1,448 @@
+homeRegion: &HOME_REGION us-east-1
+
+defaultVpc:
+  delete: true
+  excludeAccounts: []
+transitGateways: []
+endpointPolicies:
+  - name: Default
+    document: vpc-endpoint-policies/default.json
+  - name: Ec2
+    document: vpc-endpoint-policies/ec2.json
+
+# VPCs-- use this object to deploy a VPC in a single account and region.                       #
+vpcs: []
+  #--- Dev Workload VPC ---#
+  
+  # - name: Dev-Main
+  #   account: Development
+  #   region: *HOME_REGION
+  #   internetGateway: true
+  #   cidrs:
+  #     - 10.10.0.0/20
+  #   enableDnsHostnames: true
+  #   enableDnsSupport: true
+  #   instanceTenancy: default
+  #   defaultSecurityGroupRulesDeletion: true
+  #   routeTables:
+  #     - name: Dev-Pub-RT
+  #       routes:
+  #         - name: PubRoute
+  #           destination: 0.0.0.0/0
+  #           type: internetGateway
+  #           target: IGW
+  #     - name: Dev-Priv-RT-A
+  #       routes:
+  #         - name: NatRoute
+  #           destination: 0.0.0.0/0
+  #           type: natGateway
+  #           target: Dev-Nat-A
+  #     - name: Dev-Priv-RT-B
+  #       routes:
+  #         - name: NatRoute
+  #           destination: 0.0.0.0/0
+  #           type: natGateway
+  #           target: Dev-Nat-B
+  #   subnets:
+  #     - name: Dev-Priv-App-A
+  #       availabilityZone: a
+  #       routeTable: Dev-Priv-RT-A
+  #       ipv4CidrBlock: 10.10.0.0/24
+  #     - name: Dev-Priv-App-B
+  #       availabilityZone: b
+  #       routeTable: Dev-Priv-RT-B
+  #       ipv4CidrBlock: 10.10.1.0/24
+  #     - name: Dev-Pub-A
+  #       availabilityZone: a
+  #       routeTable: Dev-Pub-RT
+  #       ipv4CidrBlock: 10.10.10.0/24
+  #     - name: Dev-Pub-B
+  #       availabilityZone: b
+  #       routeTable: Dev-Pub-RT
+  #       ipv4CidrBlock: 10.10.11.0/24
+  #   natGateways:
+  #     - name: Dev-Nat-A
+  #       subnet: Dev-Pub-A
+  #     - name: Dev-Nat-B
+  #       subnet: Dev-Pub-B
+  #   gatewayEndpoints:
+  #     defaultPolicy: Default
+  #     endpoints:
+  #       - service: s3
+  #       - service: dynamodb
+  #   interfaceEndpoints:
+  #     central: true
+  #     defaultPolicy: Default
+  #     subnets:
+  #       - Dev-Priv-App-A
+  #       - Dev-Priv-App-B
+  #     endpoints:
+  #       - service: ec2
+  #       - service: ec2messages
+  #       - service: ssmmessages
+  #       - service: ssm
+  #       - service: cloudformation
+  #       - service: sts
+  #       - service: imagebuilder
+  #       # - service: kms
+  #       # - service: logs
+  #       # - service: rds
+  #       # - service: rds-data
+  #       # - service: secretsmanager
+  #       # - service: monitoring
+  #       # - service: ebs
+  #       # - service: sqs
+  #       # - service: sns
+  #       # - service: events
+  #       # - service: execute-api
+  #       # - service: kinesis-streams
+  #       # - service: kinesis-firehose
+  #       # - service: elasticloadbalancing
+  #       # - service: elasticfilesystem
+  #       # - service: autoscaling
+  #       # - service: autoscaling-plans
+  #   vpcFlowLogs:
+  #     trafficType: ALL
+  #     maxAggregationInterval: 600
+  #     destinations:
+  #       - s3
+  #     destinationsConfig:
+  #       s3:
+  #         lifecycleRules:
+  #           - enabled: true
+  #             abortIncompleteMultipartUpload: 7
+  #             expiration: 14
+  #             noncurrentVersionExpiration: 14
+  #     defaultFormat: false
+  #     customFields:
+  #       - version
+  #       - account-id
+  #       - interface-id
+  #       - srcaddr
+  #       - dstaddr
+  #       - srcport
+  #       - dstport
+  #       - protocol
+  #       - packets
+  #       - bytes
+  #       - start
+  #       - end
+  #       - action
+  #       - log-status
+  #       - vpc-id
+  #       - subnet-id
+  #       - instance-id
+  #       - tcp-flags
+  #       - type
+  #       - pkt-srcaddr
+  #       - pkt-dstaddr
+  #       - region
+  #       - az-id
+  #       - pkt-src-aws-service
+  #       - pkt-dst-aws-service
+  #       - flow-direction
+  #       - traffic-path
+
+  # #--- Staging Workload VPC ---#
+  # - name: Staging-Main
+  #   account: Staging
+  #   region: *HOME_REGION
+  #   internetGateway: true
+  #   cidrs:
+  #     - 10.10.16.0/20
+  #   enableDnsHostnames: true
+  #   enableDnsSupport: true
+  #   instanceTenancy: default
+  #   defaultSecurityGroupRulesDeletion: true
+  #   routeTables:
+  #     - name: Staging-Pub-RT
+  #       routes:
+  #         - name: PubRoute
+  #           destination: 0.0.0.0/0
+  #           type: internetGateway
+  #           target: IGW
+  #     - name: Staging-Priv-RT-A
+  #       routes:
+  #         - name: NatRoute
+  #           destination: 0.0.0.0/0
+  #           type: natGateway
+  #           target: Staging-Nat-A
+  #     - name: Staging-Priv-RT-B
+  #       routes:
+  #         - name: NatRoute
+  #           destination: 0.0.0.0/0
+  #           type: natGateway
+  #           target: Staging-Nat-B
+  #   subnets:
+  #     - name: Staging-Priv-App-A
+  #       availabilityZone: a
+  #       routeTable: Staging-Priv-RT-A
+  #       ipv4CidrBlock: 10.10.16.0/24
+  #     - name: Staging-Priv-App-B
+  #       availabilityZone: b
+  #       routeTable: Staging-Priv-RT-B
+  #       ipv4CidrBlock: 10.10.17.0/24
+  #     - name: Staging-Pub-A
+  #       availabilityZone: a
+  #       routeTable: Staging-Pub-RT
+  #       ipv4CidrBlock: 10.10.26.0/24
+  #     - name: Staging-Pub-B
+  #       availabilityZone: b
+  #       routeTable: Staging-Pub-RT
+  #       ipv4CidrBlock: 10.10.27.0/24
+  #   natGateways:
+  #     - name: Staging-Nat-A
+  #       subnet: Staging-Pub-A
+  #     - name: Staging-Nat-B
+  #       subnet: Staging-Pub-B
+  #   gatewayEndpoints:
+  #     defaultPolicy: Default
+  #     endpoints:
+  #       - service: s3
+  #       - service: dynamodb
+  #   interfaceEndpoints:
+  #     central: true
+  #     defaultPolicy: Default
+  #     subnets:
+  #       - Staging-Priv-App-A
+  #       - Staging-Priv-App-B
+  #     endpoints:
+  #       - service: ec2
+  #       - service: ec2messages
+  #       - service: ssmmessages
+  #       - service: ssm
+  #       - service: cloudformation
+  #       - service: sts
+  #       - service: imagebuilder
+  #       # - service: kms
+  #       # - service: logs
+  #       # - service: rds
+  #       # - service: rds-data
+  #       # - service: secretsmanager
+  #       # - service: monitoring
+  #       # - service: ebs
+  #       # - service: sqs
+  #       # - service: sns
+  #       # - service: events
+  #       # - service: execute-api
+  #       # - service: kinesis-streams
+  #       # - service: kinesis-firehose
+  #       # - service: elasticloadbalancing
+  #       # - service: elasticfilesystem
+  #       # - service: autoscaling
+  #       # - service: autoscaling-plans
+  #   vpcFlowLogs:
+  #     trafficType: ALL
+  #     maxAggregationInterval: 600
+  #     destinations:
+  #       - s3
+  #     destinationsConfig:
+  #       s3:
+  #         lifecycleRules:
+  #           - enabled: true
+  #             abortIncompleteMultipartUpload: 7
+  #             expiration: 14
+  #             noncurrentVersionExpiration: 14
+  #     defaultFormat: false
+  #     customFields:
+  #       - version
+  #       - account-id
+  #       - interface-id
+  #       - srcaddr
+  #       - dstaddr
+  #       - srcport
+  #       - dstport
+  #       - protocol
+  #       - packets
+  #       - bytes
+  #       - start
+  #       - end
+  #       - action
+  #       - log-status
+  #       - vpc-id
+  #       - subnet-id
+  #       - instance-id
+  #       - tcp-flags
+  #       - type
+  #       - pkt-srcaddr
+  #       - pkt-dstaddr
+  #       - region
+  #       - az-id
+  #       - pkt-src-aws-service
+  #       - pkt-dst-aws-service
+  #       - flow-direction
+  #       - traffic-path
+
+  # #--- Prod Workload VPC ---#
+  # - name: Prod-Main
+  #   account: Production
+  #   region: *HOME_REGION
+  #   internetGateway: true
+  #   cidrs:
+  #     - 10.10.32.0/20
+  #   enableDnsHostnames: true
+  #   enableDnsSupport: true
+  #   instanceTenancy: default
+  #   defaultSecurityGroupRulesDeletion: true
+  #   routeTables:
+  #     - name: Prod-Pub-RT
+  #       routes:
+  #         - name: PubRoute
+  #           destination: 0.0.0.0/0
+  #           type: internetGateway
+  #           target: IGW
+  #     - name: Prod-Priv-RT-A
+  #       routes:
+  #         - name: NatRoute
+  #           destination: 0.0.0.0/0
+  #           type: natGateway
+  #           target: Prod-Nat-A
+  #     - name: Prod-Priv-RT-B
+  #       routes:
+  #         - name: NatRoute
+  #           destination: 0.0.0.0/0
+  #           type: natGateway
+  #           target: Prod-Nat-B
+  #   subnets:
+  #     - name: Prod-Priv-App-A
+  #       availabilityZone: a
+  #       routeTable: Prod-Priv-RT-A
+  #       ipv4CidrBlock: 10.10.32.0/24
+  #     - name: Prod-Priv-App-B
+  #       availabilityZone: b
+  #       routeTable: Prod-Priv-RT-B
+  #       ipv4CidrBlock: 10.10.33.0/24
+  #     - name: Prod-Pub-A
+  #       availabilityZone: a
+  #       routeTable: Prod-Pub-RT
+  #       ipv4CidrBlock: 10.10.42.0/24
+  #     - name: Prod-Pub-B
+  #       availabilityZone: b
+  #       routeTable: Prod-Pub-RT
+  #       ipv4CidrBlock: 10.10.43.0/24
+  #   natGateways:
+  #     - name: Prod-Nat-A
+  #       subnet: Prod-Pub-A
+  #     - name: Prod-Nat-B
+  #       subnet: Prod-Pub-B
+  #   gatewayEndpoints:
+  #     defaultPolicy: Default
+  #     endpoints:
+  #       - service: s3
+  #       - service: dynamodb
+  #   interfaceEndpoints:
+  #     central: true
+  #     defaultPolicy: Default
+  #     subnets:
+  #       - Prod-Priv-App-A
+  #       - Prod-Priv-App-B
+  #     endpoints:
+  #       - service: ec2
+  #       - service: ec2messages
+  #       - service: ssmmessages
+  #       - service: ssm
+  #       - service: cloudformation
+  #       - service: sts
+  #       - service: imagebuilder
+  #       # - service: kms
+  #       # - service: logs
+  #       # - service: rds
+  #       # - service: rds-data
+  #       # - service: secretsmanager
+  #       # - service: monitoring
+  #       # - service: ebs
+  #       # - service: sqs
+  #       # - service: sns
+  #       # - service: events
+  #       # - service: execute-api
+  #       # - service: kinesis-streams
+  #       # - service: kinesis-firehose
+  #       # - service: elasticloadbalancing
+  #       # - service: elasticfilesystem
+  #       # - service: autoscaling
+  #       # - service: autoscaling-plans
+  #   vpcFlowLogs:
+  #     trafficType: ALL
+  #     maxAggregationInterval: 600
+  #     destinations:
+  #       - s3
+  #     destinationsConfig:
+  #       s3:
+  #         lifecycleRules:
+  #           - enabled: true
+  #             abortIncompleteMultipartUpload: 7
+  #             expiration: 14
+  #             noncurrentVersionExpiration: 14
+  #     defaultFormat: false
+  #     customFields:
+  #       - version
+  #       - account-id
+  #       - interface-id
+  #       - srcaddr
+  #       - dstaddr
+  #       - srcport
+  #       - dstport
+  #       - protocol
+  #       - packets
+  #       - bytes
+  #       - start
+  #       - end
+  #       - action
+  #       - log-status
+  #       - vpc-id
+  #       - subnet-id
+  #       - instance-id
+  #       - tcp-flags
+  #       - type
+  #       - pkt-srcaddr
+  #       - pkt-dstaddr
+  #       - region
+  #       - az-id
+  #       - pkt-src-aws-service
+  #       - pkt-dst-aws-service
+  #       - flow-direction
+  #       - traffic-path
+
+
+##############################################################
+# Global configuration for VPC flow logs                     #
+# Where there is no flow log configuration defined with VPC  #
+# this configuration will be used for flow log configuration #
+##############################################################
+vpcFlowLogs:
+  trafficType: ALL
+  maxAggregationInterval: 600
+  destinations:
+    - cloud-watch-logs
+  destinationsConfig:
+    cloudWatchLogs:
+      retentionInDays: 30
+  defaultFormat: false
+  customFields:
+    - version
+    - account-id
+    - interface-id
+    - srcaddr
+    - dstaddr
+    - srcport
+    - dstport
+    - protocol
+    - packets
+    - bytes
+    - start
+    - end
+    - action
+    - log-status
+    - vpc-id
+    - subnet-id
+    - instance-id
+    - tcp-flags
+    - type
+    - pkt-srcaddr
+    - pkt-dstaddr
+    - region
+    - az-id
+    - pkt-src-aws-service
+    - pkt-dst-aws-service
+    - flow-direction
+    - traffic-path

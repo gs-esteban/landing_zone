@@ -1,0 +1,47 @@
+enable: true
+organizationalUnits:
+  - name: Security
+  - name: Infrastructure
+  - name: Workloads
+  - name: Workloads/Development
+  - name: Workloads/Staging
+  - name: Workloads/Production
+  - name: GrupoSanchez
+    ignore: true
+serviceControlPolicies: []
+  # - name: DefaultGuardRails
+  #   description: >
+  #     JobSync Default GuardRails
+  #   policy: service-control-policies/default-guardrails.json
+  #   type: customerManaged
+  #   deploymentTargets:
+  #     organizationalUnits:
+  #       - Security
+  #       - Infrastructure
+  #       - Workloads
+  #       - Workloads/Development
+  #       - Workloads/Staging
+  #       - Workloads/Production
+  #     excludedAccounts:
+  #       - Management
+taggingPolicies:
+  - name: standard-tags
+    description: >
+      Tag policy for standard tags across specified OUs.
+    policy: tagging-policies/standard-tags.json
+    deploymentTargets:
+      organizationalUnits:
+        - Security
+        - Infrastructure
+        - Workloads
+        - Workloads/Development
+        - Workloads/Staging
+        - Workloads/Production
+backupPolicies:
+  - name: general-backup-policy
+    description: >
+      Backup policy targeting resources tagged with Backup = True across specified OUs.
+    policy: backup-policies/general-backup-policy.json
+    deploymentTargets:
+      organizationalUnits:
+        - Workloads/Development

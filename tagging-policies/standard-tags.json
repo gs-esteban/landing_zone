@@ -1,0 +1,56 @@
+{
+    "tags": {
+        "name": {
+            "tag_key": {
+                "@@assign": "Name"
+            }
+        },
+        "environment": {
+            "tag_key": {
+                "@@assign": "Environment"
+            },
+            "tag_value": {
+                "@@assign": [
+                    "Dev",
+                    "Stage",
+                    "Prod"
+                ]
+            }
+        },
+        "owner": {
+            "tag_key": {
+                "@@assign": "Owner"
+            }
+        },
+        "project": {
+            "tag_key": {
+                "@@assign": "Project"
+            }
+        },
+        "costcenter": {
+            "tag_key": {
+                "@@assign": "CostCenter"
+            }
+        },
+        "createdby": {
+            "tag_key": {
+                "@@assign": "CreatedBy"
+            }
+        },
+        "application": {
+            "tag_key": {
+                "@@assign": "Application"
+            }
+        },
+        "criticality": {
+            "tag_key": {
+                "@@assign": "Criticality"
+            }
+        },
+        "compliance": {
+            "tag_key": {
+                "@@assign": "Compliance"
+            }
+        }
+    }
+}

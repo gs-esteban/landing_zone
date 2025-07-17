@@ -1,0 +1,61 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Parameters:
+  SSMAutomationRoleName:
+    Type: String
+    Description: The name of the SSM Automation Role.
+    Default: SSMAutomationRole
+  SSMAutomationRoleDescription:
+    Type: String
+    Description: The name of the IAM role description.
+    Default: An execution role for a amazon ssm automation role. 
+  SSMAutomationRolePolicyName:
+    Type: String
+    Description: The lambda policy name.
+    Default: SSMAutomationRole-policy
+  SSMAutomationRolePolicyDescription:
+    Type: String
+    Description: The amazon ssm automation role policy description.
+    Default: customer managed policy for amazon ssm automation role
+
+Resources:
+  SSMAutomationRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Description: !Ref SSMAutomationRoleDescription
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - ssm.amazonaws.com
+          Action: sts:AssumeRole
+          Condition:
+            StringEquals:
+              aws:SourceAccount: !Sub ${AWS::AccountId}
+            ArnLike:
+              aws:SourceArn: !Sub arn:aws:ssm:*:${AWS::AccountId}:automation-execution/*
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AmazonSSMAutomationRole
+      RoleName: !Ref SSMAutomationRoleName
+  SSMRolePolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: !Ref SSMAutomationRolePolicyName
+      Description: !Ref SSMAutomationRolePolicyDescription
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - iam:PassRole
+            Resource:
+              - !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${SSMAutomationRoleName}
+
+Outputs:
+  AutomationRoleArn:
+    Description: The auto remediation role arn.
+    Value: !GetAtt SSMAutomationRole.Arn
+    Export:
+      Name: SSMAutomationRole

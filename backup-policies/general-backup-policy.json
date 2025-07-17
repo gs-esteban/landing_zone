@@ -1,0 +1,70 @@
+{
+  "plans": {
+      "general-backup-plan": {
+          "regions": {
+              "@@assign": [
+                  "us-east-1"
+              ]
+          },
+          "rules": {
+              "general-backup-plan-rule": {
+                  "lifecycle": {
+                      "move_to_cold_storage_after_days": {
+                          "@@assign": "7"
+                      },
+                      "delete_after_days": {
+                          "@@assign": "97"
+                      }
+                  },
+                  "target_backup_vault_name": {
+                      "@@assign": "Backups_Vault"
+                  },
+                  "recovery_point_tags": {
+                      "Custom-policy-backups": {
+                          "tag_key": {
+                              "@@assign": "Custom-policy-backups"
+                          },
+                          "tag_value": {
+                              "@@assign": "yes"
+                          }
+                      }
+                  }
+              }
+          },
+          "backup_plan_tags": {
+              "Custom": {
+                  "tag_key": {
+                      "@@assign": "Custom"
+                  },
+                  "tag_value": {
+                      "@@assign": "lza-custom-backup"
+                  }
+              }
+          },
+          "selections": {
+              "tags": {
+                  "general-backup-plan-resources": {
+                      "iam_role_arn": {
+                          "@@assign": "arn:aws:iam::$account:role/Backup-Role"
+                      },
+                      "tag_key": {
+                          "@@assign": "Backup"
+                      },
+                      "tag_value": {
+                          "@@assign": [
+                              "True"
+                          ]
+                      }
+                  }
+              }
+          },
+          "advanced_backup_settings": {
+              "ec2": {
+                  "windows_vss": {
+                      "@@assign": "enabled"
+                  }
+              }
+          }
+      }
+  }
+}
