@@ -1,0 +1,320 @@
+homeRegion: &HOME_REGION us-east-1
+enabledRegions:
+  - *HOME_REGION
+  - us-west-2
+managementAccountAccessRole: AWSControlTowerExecution
+cloudwatchLogRetentionInDays: 3653
+cdkOptions:
+  centralizeBuckets: true
+  useManagementAccessRole: true
+terminationProtection: true
+controlTower:
+  enable: true
+  landingZone:
+    version: '3.3'
+    logging:
+      loggingBucketRetentionDays: 365
+      accessLoggingBucketRetentionDays: 365
+      organizationTrail: true
+    security:
+      enableIdentityCenterAccess: true
+  controls:
+    - identifier: AWS-GR_RESTRICT_ROOT_USER_ACCESS_KEYS
+      enable: true
+      regions: 
+        - *HOME_REGION
+      deploymentTargets:
+        organizationalUnits:
+          - Infrastructure
+          - Security
+          - Workloads/Development
+          - Workloads/Production
+    - identifier: AWS-GR_RESTRICT_ROOT_USER
+      enable: true
+      regions: 
+        - *HOME_REGION
+      deploymentTargets:
+        organizationalUnits:
+          - Infrastructure
+          - Security
+          - Workloads/Development
+          - Workloads/Production
+    - identifier: AWS-GR_ROOT_ACCOUNT_MFA_ENABLED
+      enable: true
+      regions: 
+        - *HOME_REGION
+      deploymentTargets:
+        organizationalUnits:
+          - Infrastructure
+          - Security
+          - Workloads/Development
+          - Workloads/Production
+    - identifier: AWS-GR_DETECT_CLOUDTRAIL_ENABLED_ON_MEMBER_ACCOUNTS
+      enable: true
+      regions: 
+        - *HOME_REGION
+      deploymentTargets:
+        organizationalUnits:
+          - Infrastructure
+          - Security
+          - Workloads/Development
+          - Workloads/Production
+    - identifier: AWS-GR_S3_BUCKET_PUBLIC_READ_PROHIBITED
+      enable: true
+      regions: 
+        - *HOME_REGION
+      deploymentTargets:
+        organizationalUnits:
+          - Infrastructure
+          - Security
+          - Workloads/Development
+          - Workloads/Production
+    - identifier: AWS-GR_S3_BUCKET_PUBLIC_WRITE_PROHIBITED
+      enable: true
+      regions: 
+        - *HOME_REGION
+      deploymentTargets:
+        organizationalUnits:
+          - Infrastructure
+          - Security
+          - Workloads/Development
+          - Workloads/Production
+    - identifier: AWS-GR_RDS_STORAGE_ENCRYPTED
+      enable: true
+      regions: 
+        - *HOME_REGION
+      deploymentTargets:
+        organizationalUnits:
+          - Infrastructure
+          - Security
+          - Workloads/Development
+          - Workloads/Production
+    - identifier: AWS-GR_RDS_SNAPSHOTS_PUBLIC_PROHIBITED
+      enable: true
+      regions: 
+        - *HOME_REGION
+      deploymentTargets:
+        organizationalUnits:
+          - Infrastructure
+          - Security
+          - Workloads/Development
+          - Workloads/Production
+    - identifier: AWS-GR_RDS_INSTANCE_PUBLIC_ACCESS_CHECK
+      enable: true
+      regions: 
+        - *HOME_REGION
+      deploymentTargets:
+        organizationalUnits:
+          - Infrastructure
+          - Security
+          - Workloads/Development
+          - Workloads/Production
+    - identifier: AWS-GR_RESTRICTED_SSH
+      enable: true
+      regions: 
+        - *HOME_REGION
+      deploymentTargets:
+        organizationalUnits:
+          - Infrastructure
+          - Security
+          - Workloads/Development
+          - Workloads/Production
+    - identifier: AWS-GR_RESTRICTED_COMMON_PORTS
+      enable: true
+      regions: 
+        - *HOME_REGION
+      deploymentTargets:
+        organizationalUnits:
+          - Infrastructure
+          - Security
+          - Workloads/Development
+          - Workloads/Production
+    - identifier: AWS-GR_ENCRYPTED_VOLUMES
+      enable: true
+      regions: 
+        - *HOME_REGION
+      deploymentTargets:
+        organizationalUnits:
+          - Infrastructure
+          - Security
+          - Workloads/Development
+          - Workloads/Production
+    - identifier: AWS-GR_EC2_VOLUME_INUSE_CHECK
+      enable: true
+      regions: 
+        - *HOME_REGION
+      deploymentTargets:
+        organizationalUnits:
+          - Infrastructure
+          - Security
+          - Workloads/Development
+          - Workloads/Production
+    - identifier: AWS-GR_EBS_OPTIMIZED_INSTANCE
+      enable: true
+      regions: 
+        - *HOME_REGION
+      deploymentTargets:
+        organizationalUnits:
+          - Infrastructure
+          - Security
+          - Workloads/Development
+          - Workloads/Production
+logging:
+  account: LogArchive
+  cloudtrail:
+    enable: false
+    organizationTrail: false
+    organizationTrailSettings:
+      multiRegionTrail: true
+      globalServiceEvents: true
+      managementEvents: true
+      s3DataEvents: true
+      lambdaDataEvents: true
+      sendToCloudWatchLogs: true
+      apiErrorRateInsight: false
+      apiCallRateInsight: false
+    accountTrails: []
+    lifecycleRules: []
+  sessionManager:
+    sendToCloudWatchLogs: false
+    sendToS3: true
+    excludeRegions: []
+    excludeAccounts: []
+    lifecycleRules:
+      - enabled: true
+        abortIncompleteMultipartUpload: 7
+        expiration: 30
+        noncurrentVersionExpiration: 30
+    attachPolicyToIamRoles:
+      - EC2-Instance-Profile-SSM-Role
+  cloudwatchLogs:
+    dynamicPartitioning: dynamic-partitioning/log-filters.json
+  elbLogBucket:
+    lifecycleRules:
+      - enabled: true
+        abortIncompleteMultipartUpload: 7
+        expiration: 730
+        noncurrentVersionExpiration: 730
+        transitions:
+          - storageClass: GLACIER_IR
+            transitionAfter: 365
+        noncurrentVersionTransitions:
+          - storageClass: GLACIER_IR
+            transitionAfter: 365
+  accessLogBucket:
+    lifecycleRules:
+      - enabled: true
+        abortIncompleteMultipartUpload: 7
+        expiration: 730
+        noncurrentVersionExpiration: 730
+        transitions:
+          - storageClass: GLACIER_IR
+            transitionAfter: 365
+        noncurrentVersionTransitions:
+          - storageClass: GLACIER_IR
+            transitionAfter: 365
+  centralLogBucket:
+    lifecycleRules:
+      - enabled: true
+        abortIncompleteMultipartUpload: 7
+        expiration: 1000
+        noncurrentVersionExpiration: 1000
+        transitions:
+          - storageClass: GLACIER_IR
+            transitionAfter: 365
+        noncurrentVersionTransitions:
+          - storageClass: GLACIER_IR
+            transitionAfter: 365
+    s3ResourcePolicyAttachments:
+      - policy: bucket-policies/central-log-bucket.json
+snsTopics:
+  deploymentTargets:
+    accounts:
+      - Management
+  topics:
+    - name: Security
+      emailAddresses:
+        - alejandro.cabrera@sanchezgrupo.com
+ssmInventory:
+  enable: true
+  deploymentTargets:
+    organizationalUnits:
+      - Infrastructure
+      - Workloads/Development
+      - Workloads/Production
+reports:
+  costAndUsageReport:
+    compression: Parquet
+    format: Parquet
+    reportName: accelerator-cur
+    s3Prefix: cur
+    timeUnit: MONTHLY
+    refreshClosedReports: true
+    reportVersioning: CREATE_NEW_REPORT
+    lifecycleRules:
+      - enabled: true
+        abortIncompleteMultipartUpload: 7
+        expiration: 730
+        noncurrentVersionExpiration: 730
+  budgets:
+    - deploymentTargets:
+        accounts:
+          - Management
+      name: accel-budget
+      timeUnit: MONTHLY
+      type: COST
+      amount: 55000
+      includeUpfront: true
+      includeTax: true
+      includeSupport: true
+      includeSubscription: true
+      includeRecurring: true
+      includeOtherSubscription: true
+      includeDiscount: true
+      includeCredit: false
+      includeRefund: false
+      useBlended: false
+      useAmortized: false
+      unit: USD
+      notifications:
+        - type: ACTUAL
+          thresholdType: PERCENTAGE
+          threshold: 100
+          comparisonOperator: GREATER_THAN
+          subscriptionType: EMAIL
+          address: alejandro.cabrera@sanchezgrupo.com
+        - type: ACTUAL
+          thresholdType: PERCENTAGE
+          threshold: 90
+          comparisonOperator: GREATER_THAN
+          subscriptionType: EMAIL
+          address: alejandro.cabrera@sanchezgrupo.com
+        - type: ACTUAL
+          thresholdType: PERCENTAGE
+          threshold: 80
+          comparisonOperator: GREATER_THAN
+          subscriptionType: EMAIL
+          address: alejandro.cabrera@sanchezgrupo.com
+# limits:
+#   - serviceCode: lambda
+#     quotaCode: L-2ACBD22F
+#     desiredValue: 2000
+#     deploymentTargets:
+#       organizationalUnits:
+#         - Infrastructure
+# ssmParameters:
+#   - deploymentTargets:
+#       organizationalUnits:
+#         - Infrastructure
+#     parameters:
+#       - name: ParameterName
+#         path: /custom/path/variable
+#         value: SSMParameterValue
+# backup:
+#   vaults:
+#     - name: BackupVault
+#       deploymentTargets:
+#         organizationalUnits:
+#           - Root
+tags: []
+iamRoleSsmParameters: []

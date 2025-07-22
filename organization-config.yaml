@@ -11,7 +11,7 @@ organizationalUnits:
 serviceControlPolicies: []
   # - name: DefaultGuardRails
   #   description: >
-  #     JobSync Default GuardRails
+  #     Sanchez Default GuardRails
   #   policy: service-control-policies/default-guardrails.json
   #   type: customerManaged
   #   deploymentTargets:
