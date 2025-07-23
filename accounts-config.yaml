@@ -23,7 +23,7 @@ mandatoryAccounts:
     email: segaws@sanchezgrupo.com
     organizationalUnit: Security
     warm: false
-# workloadAccounts:
+workloadAccounts: []
   # - name: Development
   #   description: The New Development or Sandbox account. This will be used for testing new services and features, but will be empty to start.
   #   email: 
